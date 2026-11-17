@@ -267,7 +267,7 @@ function wall(){const w=$('#wall');w.innerHTML='';PH.filter(p=>!HID.has(p.t)).sl
 function addPh(p){if(seen.has(p.t))return;seen.add(p.t);PH.push(p);PH.sort((a,b)=>b.t-a.t);wall()}
 
 function saveShot(cv,fid){const o=document.createElement('canvas');o.width=720;o.height=1280;o.getContext('2d').drawImage(cv,0,0,720,1280);const img=o.toDataURL('image/jpeg',.75),t=Date.now(),d={img,t,f:fid};addPh(d);idbPut(d);up(d)}
-const FB_CFG=null,TEAM_EMAIL='equipe@titans.com';
+const FB_CFG={apiKey:"AIzaSyAwBsYumY8VowYsTy7o0Wc8tOTUtiMgRjk",authDomain:"titans-smart-city.firebaseapp.com",projectId:"titans-smart-city",appId:"1:759067401865:web:ffaa1cad9cfbfeb77fb058"},TEAM_EMAIL='equipe@titans.com';
 const SH=[],known=new Set(),FBON=!!FB_CFG;let SHI=0,LST=0,NQ=[],busy=0;const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 const FBP=new Promise(res=>{if(!FB_CFG)return res(null);const u=['app','auth','firestore'].map(n=>'https://www.gstatic.com/firebasejs/10.12.2/firebase-'+n+'-compat.js');let i=0;const nx=()=>{if(i==u.length){try{firebase.initializeApp(FB_CFG);res({db:firebase.firestore(),auth:firebase.auth()})}catch(e){res(null)}return}const s=document.createElement('script');s.src=u[i++];s.onload=nx;s.onerror=()=>res(null);document.head.appendChild(s)};nx()});
 const up=(d,n=0)=>FBP.then(f=>f&&f.db.collection('fotos').add({img:d.img,t:d.t,f:d.f})).catch(()=>{if(n<4)setTimeout(()=>up(d,n+1),4000*(n+1))});
